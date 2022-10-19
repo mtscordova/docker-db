@@ -1,0 +1,29 @@
+version: '3'
+services:
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8001:8080"
+    networks:
+      - trabajo-titulo
+
+  mariadb:
+    image: mariadb:10.4
+    container_name: dev.mariadb
+    volumes:
+      - ./mariadb104:/var/lib/mysql
+      - ./dumps:/dumps
+      - ./conf/mariadb.10.4:/etc/mysql/mariadb.conf.d
+      - ./slow-query/mariadb.10.4:/slow-query
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - ALLOW_EMPTY_PASSWORD=no
+    ports:
+      - "3307:3306"
+    networks:
+      - trabajo-titulo
+
+networks:
+  trabajo-titulo:
+    external: true
